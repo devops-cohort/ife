@@ -1,5 +1,6 @@
 from flask import render_template
 from front import app
+from front.models import User, Character, Campaign
 
 @app.route('/')
 @app.route('/home')
@@ -8,14 +9,16 @@ def home():
 
 @app.route('/chara')
 def character():
-    return render_template('character.html', title='Character')
+    characterData= Character.query.all()
+    return render_template('character.html', title='Character', characters=characterData)
 
 @app.route('/camp')
 def campaign():
-    return render_template('campaign.html', title='Campaign')
+    campaignData= Campaign.query.all()
+    return render_template('campaign.html', title='Campaign', campaigns=campaignData)
 
 @app.route('/login')
-def campaign():
+def login():
     return render_template('login.html', title='Login')
 
 @app.route('/register')

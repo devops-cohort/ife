@@ -1,4 +1,5 @@
-from application import db
+from front import db
+from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,9 +17,10 @@ class User(db.Model):
 class Character(db.Model):
      id = db.Column(db.Integer, primary_key=True)
      character_name = db.Column(db.String(200), nullable=False)
-     level = db.Column(db.Integer(2), nullable=False, default='1')
+     level = db.Column(db.Integer, nullable=False, default='1')
      race = db.Column(db.String(20), nullable=False)
-     character_class = (db.String(30), nullable=False)
+     character_class = db.Column(db.String(30), nullable=False)
+     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
      def __repr__(self):
          return ''.join([
@@ -29,4 +31,18 @@ class Character(db.Model):
 
         ])
 
+class Campaign(db.Model):
+     id = db.Column(db.Integer, primary_key=True)
+     camp_name = db.Column(db.String(500), nullable=False)
+     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+     end_date = db.Column(db.DateTime, nullable=False, default='TBD')
+     status = db.Column(db.String(20), nullable=False)
+     character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
 
+     def __repr__(self):
+         return ''.join([
+             'Campaign: ', self.camp_name, '\r\n',
+             'Start Date: ', self.start_date, '\r\n',
+             'Finish Date: ', self.end_date, '\r\n',
+             'Status: ', self.status
+        ])
