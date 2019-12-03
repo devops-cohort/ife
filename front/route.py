@@ -14,6 +14,10 @@ def character():
 def campaign():
     return render_template('campaign.html', title='Campaign')
 
+@app.route('/login')
+def campaign():
+    return render_template('login.html', title='Login')
+
 @app.route('/register')
 def register():
     return render_template('register.html', title='Register')
