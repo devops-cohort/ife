@@ -5,7 +5,9 @@ from front.models import User
 
 
 class RegistrationForm(FlaskForm):
-    user_name = StringField('First Name',
+
+
+    user_name = StringField('User Name',
             validators=[
                 DataRequired(),
                 Length(min=2, max=30)
@@ -29,10 +31,12 @@ class RegistrationForm(FlaskForm):
                 EqualTo('password')
             ]
         )
+
+
     submit = SubmitField('Sign Up')
 
     def validate_email(self, email):
-        user = Users.query.filter_by(email=email.data).first()
+        user = User.query.filter_by(email=email.data).first()
 
 
         if user:
@@ -40,19 +44,12 @@ class RegistrationForm(FlaskForm):
 
     
 class LoginForm(FlaskForm):
-    user_name = StringField('Username',
+    user_name = StringField('User Name',
             validators=[
                 DataRequired(),
-                Email()
+                
             ]
         )
-
-    email = StringField('Email',
-            validators=[
-                DataRequired()
-            ]
-        )
-
     password = PasswordField('Password',
             validators=[
                 DataRequired()

@@ -6,11 +6,18 @@
 	<body>
 		<h1>{{ title }} Page</h1>
 		<div class="navbar">
-			<a href="{{ url_for('home') }}">Home</a>
-			<a href="{{ url_for('character') }}">Character</a>
-			<a href="{{ url_for('campaign') }}">Campaign</a>
-			<a href="{{ url_for('register') }}">Register</a>
-			<a href="{{ url_for('login') }}">Login</a>
+			{% if current_user.is_authenticated %}
+				<a href="{{ url_for('home') }}">Home</a>
+				<a href="{{ url_for('character') }}">Character</a>
+				<a href="{{ url_for('campaign') }}">Campaign</a>
+				<a href="{{ url_for('register') }}">Register</a>
+				<a href="{{ url_for('logout') }}">Logout</a>
+			{% else %}
+				 <a href="{{ url_for('home') }}">Home</a>
+				 <a href="{{ url_for('login') }}">Login</a>
+				 <a href="{{ url_for('register') }}">Register</a>
+			{% endif %}
+		</div>
 		{% block body %}
 		{% endblock %}
 	</body>
