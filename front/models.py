@@ -14,7 +14,7 @@ class User(db.Model):
             'Name: ', self.user_name
         ])
 
-class Character(db.Model):
+class Chara(db.Model):
      id = db.Column(db.Integer, primary_key=True)
      character_name = db.Column(db.String(200), nullable=False)
      level = db.Column(db.Integer, nullable=False, default='1')
@@ -37,7 +37,7 @@ class Campaign(db.Model):
      start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
      end_date = db.Column(db.DateTime, nullable=False, default='TBD')
      status = db.Column(db.String(20), nullable=False)
-     character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
+     character_id = db.Column(db.Integer, db.ForeignKey('chara.id'), nullable=False)
 
      def __repr__(self):
          return ''.join([
