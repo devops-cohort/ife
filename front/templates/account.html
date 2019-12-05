@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>{{ current_user.user_name + "'s" }} {{ title }}</h1>
+        <div class="form">
+                <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                                {{ form.user_name.label }}
+                                {% if form.user_name.errors %}
+                                        {{ form.user_name }}
+                                        <div class="error">
+                                                {% for error in form.user_name.errors %}
+                                                        <span>{{ error  }}</span>
+                                                {% endfor %}
+                                        </div>
+                                {% else %}
+                                        {{ form.user_name }}
+                                {% endif %}
+                        <br>
+			<div class="form-group">
+                                {{ form.email.label }}
+                                {% if form.email.errors %}
+                                        {{ form.email }}
+                                        <div class="error">
+                                                {% for error in form.email.errors %}
+                                                        <span>{{ error }}</span>
+                                                {% endfor %}
+                                        </div>
+                                {% else %}
+                                        {{ form.email }}
+                                {% endif %}
+                        </div>
+                        <div class="form-group">
+                                {{ form.submit }}
+                        </div>
+                </form>
+        </div>
+{% endblock %}

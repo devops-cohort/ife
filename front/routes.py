@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from front import app, db, bcrypt
 from front.models import User, Chara, Campaign
-from front.forms import RegistrationForm, LoginForm
+from front.forms import RegistrationForm, LoginForm, UpdateAccountForm
 
 @app.route('/')
 @app.route('/home')
@@ -60,5 +60,19 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+@app.route('/account', methods=['GET','POST'])
+@login_required
+def account():
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        current_user.user_name = form.user_name.data
+        current_user.email = form.email.data
+        db.session.commit()
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.user_name.data = current_user.user_name
+        form.email.data = current_user.email
+    return render_template('account.html', title='Account', form=form)
 
 
