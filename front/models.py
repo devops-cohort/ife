@@ -7,6 +7,7 @@ class User(db.Model, UserMixin):
     user_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
+    charas = db.relationship('Chara', backref='creator', lazy=True)
 
     @login_manager.user_loader
     def load_user(id):
@@ -26,6 +27,7 @@ class Chara(db.Model):
      race = db.Column(db.String(20), nullable=False)
      character_class = db.Column(db.String(30), nullable=False)
      user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+     camps = db.relationship('Campaign', backref='member', lazy=True)
 
      def __repr__(self):
          return ''.join([

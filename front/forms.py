@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_login import LoginManager, current_user
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, IntegerField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from front.models import User
 
 
@@ -90,6 +90,60 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('The User name is already in use - Please choose Another!')
 
+class CharacterForm(FlaskForm):
+    character_name = StringField('Character Name',
+            validators=[
+                DataRequired(),
+                Length(min=1, max=200)
+            ]
+        )
 
+    level = IntegerField('Level',
+            validators=[
+                DataRequired(),
+                NumberRange(min=1, max=20)
+            ]
+        )
+    race = StringField('Race',
+            validators=[
+                DataRequired(),
+                Length(min=1, max=20)
+            ]   
+        )   
 
+    character_class = StringField('Class',
+            validators=[
+                DataRequired(),
+                Length(min=1, max=30)
+            ]   
+        )   
+    submit = SubmitField('+Add')
 
+class CampaignForm(FlaskForm):
+    camp_name = StringField('Campaign',
+            validators=[
+                DataRequired(),
+                Length(min=1, max=500)
+            ]
+        )
+
+    start_date = IntegerField('Time start',
+            validators=[
+                DataRequired(),
+                NumberRange(min=1, max=20)
+            ]
+        )
+    race = StringField('Race',
+            validators=[
+                DataRequired(),
+                Length(min=1, max=20)
+            ]
+        )
+
+    character_class = StringField('Class',
+            validators=[
+                DataRequired(),
+                Length(min=1, max=30)
+            ]
+        )
+    submit = SubmitField('+Add')
