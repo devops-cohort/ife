@@ -58,4 +58,10 @@
                         </div>
                 </form>
         </div>
+{% for role in roles %}
+                        <div>
+                                 <h3>{{ role.creator.character_name }}</h3>
+                                 <span><i>{{ role.creator.level }} {{ role.creator.race }}</i></span> <span><i>{{ role.creator.character_class }}</i></span>
+                        </div>
+{% endfor %}
 {% endblock %}

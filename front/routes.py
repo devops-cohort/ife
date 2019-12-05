@@ -12,6 +12,8 @@ def home():
 @app.route('/chara', methods=['Get', 'Post'])
 @login_required
 def character():
+    roles=Chara.query.all()
+
     form = CharacterForm()
 
 
@@ -28,12 +30,13 @@ def character():
         db.session.add(charaData)
         db.session.commit()
         return redirect(url_for('home'))
+
     
 
     else:
         print(form.errors)
     
-    return render_template('character.html', title='Character', form=form)
+    return render_template('character.html', title='Character', form=form, roles=roles)
 
 @app.route('/camp', methods=['GET','POST'])
 @login_required
@@ -47,7 +50,7 @@ def campaign():
                 start_date=form.start_date.data,
                 end_date=form.end_date.data,
                 status=form.status.data,
-                creator=current_user
+                master=current_user
                 )
         db.session.add(campData)
         db.session.commit()
@@ -90,7 +93,7 @@ def register():
                 password = hashed_pw)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 @app.route("/logout")
