@@ -1,6 +1,5 @@
 from front import db, login_manager
 from flask_login import UserMixin
-from datetime import datetime
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,8 +40,8 @@ class Chara(db.Model):
 class Campaign(db.Model):
      id = db.Column(db.Integer, primary_key=True)
      camp_name = db.Column(db.String(500), nullable=False)
-     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-     end_date = db.Column(db.DateTime, nullable=False, default='TBD')
+     start_date = db.Column(db.String(10), nullable=False)
+     end_date = db.Column(db.String(10), nullable=False)
      status = db.Column(db.String(20), nullable=False)
      character_id = db.Column(db.Integer, db.ForeignKey('chara.id'), nullable=False)
 

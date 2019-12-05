@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from front import app, db, bcrypt
 from front.models import User, Chara, Campaign
-from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, CharacterForm 
+from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, CharacterForm, CampaignForm 
 
 @app.route('/')
 @app.route('/home')
@@ -35,11 +35,28 @@ def character():
     
     return render_template('character.html', title='Character', form=form)
 
-@app.route('/camp')
+@app.route('/camp', methods=['GET','POST'])
 @login_required
 def campaign():
-    campaignData= Campaign.query.all()
-    return render_template('campaign.html', title='Campaign', campaigns=campaignData)
+    form = CampaignForm()
+
+    if form.validate_on_submit():
+
+        campData = Campaign(
+                camp_name=form.camp_name.data,
+                start_date=form.start_date.data,
+                end_date=form.end_date.data,
+                status=form.status.data,
+                member=current_user
+                )
+        db.session.add(campData)
+        db.session.commit()
+        return redirect(url_for('home'))
+
+    else:
+        print(form.errors)
+
+    return render_template('campaign.html', title='Campaign', form=form)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
