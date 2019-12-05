@@ -1,4 +1,61 @@
 {% extends "layout.html" %}
-{% block body_content %}
-        <h1>Character Page</h1>
-{% endblock body_content %}
+{% block body %}
+<h1>{{ current_user.user_name + "'s" }} {{ title + " Page" }}</h1>
+		<div class="form">
+                <form method="POST" action="">
+  			{{ form.hidden_tag() }}
+                        <div class="form-group">
+                        {{ form.character_name.label }}
+			{% if form.character_name.errors %}
+				{{ form.character_name }}
+                                        <div class="error">
+                                                {% for error in form.character_name.errors %}
+                                                        <span>{{ error  }}</span>
+                                                {% endfor %}
+                                        </div>
+                                {% else %}
+                                        {{ form.character_name }}
+                                {% endif %}
+                        <br>
+                        {{ form.level.label }}
+                        {% if form.level.errors %}
+                                        {{ form.level }}
+                                        <div class="error">
+                                                {% for error in form.level.errors %}
+                                                        <span>{{ error  }}</span>
+                                                {% endfor %}
+                                        </div>
+                                {% else %}
+                                        {{ form.level }}
+                                {% endif %}
+                        <br>
+                        {{ form.race.label }}
+                        {% if form.race.errors %}
+                                        {{ form.race }}
+                                        <div class="error">
+                                                {% for error in form.race.errors %}
+                                                        <span>{{ error  }}</span>
+                                                {% endfor %}
+                                        </div>
+                                {% else %}
+                                        {{ form.race }}
+                                {% endif %}
+                        <br>
+			{{ form.character_class.label }}
+                        {% if form.character_class.errors %}
+                                        {{ form.character_class }}
+                                        <div class="error">
+                                                {% for error in form.character_class.errors %}
+                                                        <span>{{ error  }}</span>
+                                                {% endfor %}
+                                        </div>
+                                {% else %}
+                                        {{ form.character_class }}
+                                {% endif %}
+			<br>	
+                        <div class="form-group">
+                        {{ form.submit }}
+                        </div>
+                </form>
+        </div>
+{% endblock %}

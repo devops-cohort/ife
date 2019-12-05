@@ -2,18 +2,38 @@ from flask import render_template, redirect, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from front import app, db, bcrypt
 from front.models import User, Chara, Campaign
-from front.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, CharacterForm 
 
 @app.route('/')
 @app.route('/home')
 def home():
     return render_template('home.html', title='Home')
 
-@app.route('/chara')
+@app.route('/chara', methods=['Get', 'Post'])
 @login_required
 def character():
-    characterData= Chara.query.all()
-    return render_template('character.html', title='Character', characters=characterData)
+    form = CharacterForm()
+
+
+    if form.validate_on_submit():
+
+        charaData = Chara(
+                character_name=form.character_name.data,
+                level=form.level.data,
+                race=form.race.data,
+                character_class=form.character_class.data,
+                creator=current_user
+                )
+
+        db.session.add(charaData)
+        db.session.commit()
+        return redirect(url_for('home'))
+    
+
+    else:
+        print(form.errors)
+    
+    return render_template('character.html', title='Character', form=form)
 
 @app.route('/camp')
 @login_required
