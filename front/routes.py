@@ -47,7 +47,7 @@ def campaign():
                 start_date=form.start_date.data,
                 end_date=form.end_date.data,
                 status=form.status.data,
-                member=current_user
+                creator=current_user
                 )
         db.session.add(campData)
         db.session.commit()
