@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
-{% block body_content %}
+{% block body %}
 	<h1>Home Page</h1>
-{% endblock body_content %}
+	{% for role in roles %}
+		<h3>{{ role.character_name }}</h3>
+          	<p>{{ role.level }} {{ role.race }} {{ role.character_class }}</p>
+	{% endfor %}              
+{% endblock %}

@@ -78,6 +78,7 @@ class UpdateAccountForm(FlaskForm):
             ])
     submit = SubmitField('Update')
 
+
     def validate_email(self, email):
         if email.data != current_user.email:
             user = User.query.filter_by(email=email.data).first()
@@ -146,3 +147,8 @@ class CampaignForm(FlaskForm):
             ]
         )
     submit = SubmitField('+ Add')
+
+class DeleteAccountForm(FlaskForm):
+
+
+    submit = SubmitField('Delete')

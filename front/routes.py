@@ -2,12 +2,14 @@ from flask import render_template, redirect, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from front import app, db, bcrypt
 from front.models import User, Chara, Campaign
-from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, CharacterForm, CampaignForm 
+from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, CharacterForm, CampaignForm, DeleteAccountForm 
 
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', title='Home')
+    user_id = current_user
+    roles=Chara.query.filter_by(creator=user_id).all()
+    return render_template('home.html', title='Home', roles=roles)
 
 @app.route('/chara', methods=['Get', 'Post'])
 @login_required
@@ -104,15 +106,30 @@ def logout():
 @app.route('/account', methods=['GET','POST'])
 @login_required
 def account():
+    user_id = current_user
+    form1 = DeleteAccountForm()
     form = UpdateAccountForm()
     if form.validate_on_submit():
+        print('form')
         current_user.user_name = form.user_name.data
         current_user.email = form.email.data
         db.session.commit()
         return redirect(url_for('account'))
     elif request.method == 'GET':
+        print('elif')
         form.user_name.data = current_user.user_name
         form.email.data = current_user.email
-    return render_template('account.html', title='Account', form=form)
+
+    if form1.submit():
+        print('form1')
+        data1 = Chara.query.filter_by(creator=user_id).all()
+        data2 = User.query.filter_by(id=user_id).all()
+        data3 = Campaign.query.filter_by(master=user_id).all()
+        db.session.delete(data1)
+        db.session.delete(data2)
+        db.session.delete(data3)
+        return redirect(url_for('home'))
+
+    return render_template('account.html', title='Account', form=form, form1=form1)
 
 
