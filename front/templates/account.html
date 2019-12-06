@@ -31,8 +31,13 @@
                                 {% endif %}
                         </div>
                         <div class="form-group">
-				{{ form.submit }} {{ form1.submit }}
+				{{ form.submit }}
                         </div>
                 </form>
         </div>
+	  <div class="form1">
+                <form method="POST" action="">
+			{{ form1.submit }}
+
+	  </div>
 {% endblock %}

@@ -7,9 +7,12 @@ from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, Characte
 @app.route('/')
 @app.route('/home')
 def home():
+    return render_template('home.html', title='Home')
+@app.route('/home/login')
+def home_login():
     user_id = current_user
     roles=Chara.query.filter_by(creator=user_id).all()
-    return render_template('home.html', title='Home', roles=roles)
+    return render_template('home_login.html', title='Home', roles=roles)
 
 @app.route('/chara', methods=['Get', 'Post'])
 @login_required
@@ -31,7 +34,7 @@ def character():
 
         db.session.add(charaData)
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('home_login'))
 
     
 
@@ -56,7 +59,7 @@ def campaign():
                 )
         db.session.add(campData)
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('home_login'))
 
     else:
         print(form.errors)
@@ -120,14 +123,11 @@ def account():
         form.user_name.data = current_user.user_name
         form.email.data = current_user.email
 
-    if form1.submit():
-        print('form1')
-        data1 = Chara.query.filter_by(creator=user_id).all()
-        data2 = User.query.filter_by(id=user_id).all()
-        data3 = Campaign.query.filter_by(master=user_id).all()
-        db.session.delete(data1)
-        db.session.delete(data2)
-        db.session.delete(data3)
+    if form1.is_submitted():
+       # logout_user()
+        print('delete')
+        User.query.filter_by(id = current_user.id).delete()
+        db.session.commit()
         return redirect(url_for('home'))
 
     return render_template('account.html', title='Account', form=form, form1=form1)

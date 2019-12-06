@@ -62,3 +62,13 @@ class testapp(TestBase):
         self.assertEqual(response.status_code, 200)
 
 
+    def test_register_view(self):
+        response =self.client.get(url_for('home'))
+        self.assertEqual(response.status_code, 200)
+
+    
+
+
+
+
+

@@ -32,7 +32,7 @@ class Chara(db.Model):
      race = db.Column(db.String(20), nullable=False)
      character_class = db.Column(db.String(30), nullable=False)
      user_id =db.Column(db.Integer, db.ForeignKey('user.id')) 
-     membership = db.relationship('Campaign', secondary=group, backref='members', lazy=True)
+     membership = db.relationship('Campaign', secondary=group, cascade = 'delete', backref='members', lazy=True)
 
     
 
