@@ -1,0 +1,51 @@
+pipeline{
+	agent any
+
+	stages{
+		stage('--Update git repo--'){
+			steps{
+				sh ssh -i ./.ssh/my-ssh-key burningswordsman@35.246.102.87  
+					sudo apt update
+					sudo apt install python3-pip
+					sudo rm -r ife/
+					git clone https://github.com/devops-cohort/hafiz.git
+					cd ife/
+					git checkout main_feature
+					sudo cp flask-app.service /etc/systemd/system/
+					'''
+			}
+		}
+		stage('--Flask-App stopped--'){
+			steps{
+				sh ssh -i ./.ssh/my-ssh-key burningswordsman@35.246.102.87  
+					sudo systemctl daemon-reload
+					sudo systemctl stop flask-app
+					'''
+			}
+		}
+		stage('--Updating Flask-App--'){
+			steps{
+				sh ssh -i ./.ssh/my-ssh-key burningswordsman@35.246.102.87  
+					install_dir=/opt/flask-app
+					sudo rm -rf ${install_dir}
+					sudo mkdir ${install_dir}
+					cd ife/
+					sudo cp -r ./* ${install_dir}
+					sudo chown -R pythonadm:pythonadm ${install_dir}
+					sudo su - pythonadm << EOF
+					pip3 install virtualenv
+					cd ${install_dir}
+					python3 -m venv venv
+					. venv/bin/activate
+					pip3 install -r requirements.txt'''
+			}
+		}
+		stage('--Flask-App started--'){
+			steps{
+				sh ssh -i ./.ssh/my-ssh-key burningswordsman@35.246.102.87  
+					sudo systemctl start flask-app
+					'''
+			}
+		}
+	}
+}
