@@ -5,7 +5,7 @@
 	<body>
 		<div class="navbar">
 			{% if current_user.is_authenticated %}
-				<a href="{{ url_for('home') }}">Home</a>
+				<a href="{{ url_for('home_login') }}">Home</a>
 				<a href="{{ url_for('character') }}">Character</a>
 				<a href="{{ url_for('campaign') }}">Campaign</a>
 				<a href="{{ url_for('account') }}">Account</a>

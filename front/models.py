@@ -1,6 +1,5 @@
 from front import db, login_manager
 from flask_login import UserMixin
-from datetime import datetime
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -8,6 +7,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     charas = db.relationship('Chara', backref='creator', lazy=True)
+    camps = db.relationship('Campaign', backref='master', lazy=True)
+
 
     @login_manager.user_loader
     def load_user(id):
@@ -20,14 +21,21 @@ class User(db.Model, UserMixin):
             'Name: ', self.user_name
         ])
 
+group = db.Table('group', db.Model.metadata,
+        db.Column('campid', db.Integer, db.ForeignKey('campaign.campid')),
+        db.Column('charaid', db.Integer, db.ForeignKey('chara.charaid')))
+
 class Chara(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
+     charaid = db.Column(db.Integer, primary_key=True, autoincrement=True)
      character_name = db.Column(db.String(200), nullable=False)
      level = db.Column(db.Integer, nullable=False, default='1')
      race = db.Column(db.String(20), nullable=False)
      character_class = db.Column(db.String(30), nullable=False)
-     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-     camps = db.relationship('Campaign', backref='member', lazy=True)
+     user_id =db.Column(db.Integer, db.ForeignKey('user.id')) 
+     membership = db.relationship('Campaign', secondary=group, cascade = 'delete', backref='members', lazy=True)
+
+    
+
 
      def __repr__(self):
          return ''.join([
@@ -39,17 +47,23 @@ class Chara(db.Model):
         ])
 
 class Campaign(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
+     campid = db.Column(db.Integer, primary_key=True, autoincrement=True)
      camp_name = db.Column(db.String(500), nullable=False)
-     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-     end_date = db.Column(db.DateTime, nullable=False, default='TBD')
+     start_date = db.Column(db.String(10), nullable=False)
+     end_date = db.Column(db.String(10), nullable=False)
      status = db.Column(db.String(20), nullable=False)
-     character_id = db.Column(db.Integer, db.ForeignKey('chara.id'), nullable=False)
+     dm = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+
+    
 
      def __repr__(self):
          return ''.join([
              'Campaign: ', self.camp_name, '\r\n',
              'Start Date: ', self.start_date, '\r\n',
              'Finish Date: ', self.end_date, '\r\n',
-             'Status: ', self.status
+             'Status: ', self.status, '\r\n',
+             'Dungeon Master: ', self.user_name.dm
         ])
+
+

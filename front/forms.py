@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_login import LoginManager, current_user
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, IntegerField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, IntegerField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from front.models import User
 
@@ -78,6 +78,7 @@ class UpdateAccountForm(FlaskForm):
             ])
     submit = SubmitField('Update')
 
+
     def validate_email(self, email):
         if email.data != current_user.email:
             user = User.query.filter_by(email=email.data).first()
@@ -117,7 +118,7 @@ class CharacterForm(FlaskForm):
                 Length(min=1, max=30)
             ]   
         )   
-    submit = SubmitField('+Add')
+    submit = SubmitField('+ Add')
 
 class CampaignForm(FlaskForm):
     camp_name = StringField('Campaign',
@@ -127,23 +128,27 @@ class CampaignForm(FlaskForm):
             ]
         )
 
-    start_date = IntegerField('Time start',
+    start_date = StringField('Start Date',
             validators=[
-                DataRequired(),
-                NumberRange(min=1, max=20)
+                DataRequired()
+                
             ]
         )
-    race = StringField('Race',
+    end_date = StringField('End Date',
             validators=[
-                DataRequired(),
-                Length(min=1, max=20)
+                DataRequired()
             ]
         )
 
-    character_class = StringField('Class',
+    status = StringField('Status',
             validators=[
                 DataRequired(),
                 Length(min=1, max=30)
             ]
         )
-    submit = SubmitField('+Add')
+    submit = SubmitField('+ Add')
+
+class DeleteAccountForm(FlaskForm):
+
+
+    submit = SubmitField('Delete')
