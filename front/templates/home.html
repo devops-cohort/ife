@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
         <h1>Home Page</h1>
+	{% for party in parties %}
+	<h3>{{ party.camp_name }}</h3> <p><i> Created by {{ party.master.user_name }} </i></p>
+
+	<span> Starts:{{ party.start_date }} </span>  <span>    Ends:{{ party.end_date }} </span>    <span>  Status:{{ party.status }}</span>
+	{% endfor %}
 
 {% endblock %}

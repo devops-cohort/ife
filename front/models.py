@@ -6,8 +6,8 @@ class User(db.Model, UserMixin):
     user_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
-    charas = db.relationship('Chara', backref='creator', lazy=True)
-    camps = db.relationship('Campaign', backref='master', lazy=True)
+    charas = db.relationship('Chara', cascade='delete', backref='creator', lazy=True)
+    camps = db.relationship('Campaign', cascade='delete', backref='master', lazy=True)
 
 
     @login_manager.user_loader

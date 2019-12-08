@@ -1,19 +1,28 @@
 from flask import render_template, redirect, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from front import app, db, bcrypt
-from front.models import User, Chara, Campaign
+from front.models import User, Chara, Campaign, group
 from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, CharacterForm, CampaignForm, DeleteAccountForm 
 
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', title='Home')
+    parties=Campaign.query.all()
+    
+    return render_template('home.html', title='Home', parties=parties)
+
+#------------------------------------Home Page--------------------------------------
 @app.route('/home/login')
+@login_required
 def home_login():
     user_id = current_user
     roles=Chara.query.filter_by(creator=user_id).all()
+
     return render_template('home_login.html', title='Home', roles=roles)
 
+
+
+#------------------------------------Character Create Page--------------------------------------
 @app.route('/chara', methods=['Get', 'Post'])
 @login_required
 def character():
@@ -32,6 +41,7 @@ def character():
                 creator=current_user
                 )
 
+
         db.session.add(charaData)
         db.session.commit()
         return redirect(url_for('home_login'))
@@ -43,9 +53,12 @@ def character():
     
     return render_template('character.html', title='Character', form=form, roles=roles)
 
+
+#------------------------------------Campaign Page--------------------------------------
 @app.route('/camp', methods=['GET','POST'])
 @login_required
 def campaign():
+
     form = CampaignForm()
 
     if form.validate_on_submit():
@@ -66,6 +79,9 @@ def campaign():
 
     return render_template('campaign.html', title='Campaign', form=form)
 
+
+
+#------------------------------------Login Page--------------------------------------
 @app.route('/login', methods=['GET','POST'])
 def login():
     if current_user.is_authenticated:
@@ -86,6 +102,9 @@ def login():
 
     return render_template('login.html', title='Login', form=form)
 
+
+
+#------------------------------------Register Page--------------------------------------
 @app.route('/register', methods=['GET','POST'])
 def register():
     
@@ -101,11 +120,15 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
+#------------------------------------Logout link--------------------------------------
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
+
+#------------------------------------Account Page--------------------------------------
 @app.route('/account', methods=['GET','POST'])
 @login_required
 def account():
@@ -113,19 +136,18 @@ def account():
     form1 = DeleteAccountForm()
     form = UpdateAccountForm()
     if form.validate_on_submit():
-        print('form')
         current_user.user_name = form.user_name.data
         current_user.email = form.email.data
         db.session.commit()
         return redirect(url_for('account'))
+
     elif request.method == 'GET':
-        print('elif')
         form.user_name.data = current_user.user_name
         form.email.data = current_user.email
 
     if form1.is_submitted():
-       # logout_user()
-        print('delete')
+        Campaign.query.filter_by(campid = current_user.id).delete()
+        Chara.query.filter_by(charaid = current_user.id).delete()
         User.query.filter_by(id = current_user.id).delete()
         db.session.commit()
         return redirect(url_for('home'))
