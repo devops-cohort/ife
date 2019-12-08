@@ -154,4 +154,6 @@ def account():
 
     return render_template('account.html', title='Account', form=form, form1=form1)
 
-
+@app.route("/coverage")
+def coverage():
+    return render_template('index.html', title='Coverage')

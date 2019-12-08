@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from flask_login import LoginManager, current_user
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, IntegerField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
-from wtforms_sqlalchemy.fields import QuerySelectField
 from front.models import User, Campaign, Chara, group
 from front import app, db
 
