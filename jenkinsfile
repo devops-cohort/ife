@@ -8,7 +8,7 @@ pipeline{
 					sudo apt update
 					sudo apt install python3-pip
 					sudo rm -r ife/
-					git clone https://github.com/devops-cohort/hafiz.git
+					git clone https://github.com/devops-cohort/ife.git
 					cd ife/
 					git checkout main_feature
 					sudo cp flask-app.service /etc/systemd/system/
