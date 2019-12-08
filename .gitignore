@@ -5,3 +5,7 @@
 /front/__pycache__/
 
 /tests/__pycache__/
+
+/*.coverage
+
+/front/templates/.coverage

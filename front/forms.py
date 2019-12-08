@@ -2,7 +2,8 @@ from flask_wtf import FlaskForm
 from flask_login import LoginManager, current_user
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, IntegerField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
-from front.models import User
+from front.models import User, Campaign, Chara, group
+from front import app, db
 
 
 class RegistrationForm(FlaskForm):
@@ -54,7 +55,6 @@ class LoginForm(FlaskForm):
     user_name = StringField('User Name',
             validators=[
                 DataRequired(),
-                
             ]
         )
     password = PasswordField('Password',
@@ -70,6 +70,7 @@ class UpdateAccountForm(FlaskForm):
             validators=[
                 DataRequired(),
                 Length(min=2, max=30)
+
             ])
     email = StringField('Email',
             validators=[
@@ -117,8 +118,15 @@ class CharacterForm(FlaskForm):
                 DataRequired(),
                 Length(min=1, max=30)
             ]   
-        )   
-    submit = SubmitField('+ Add')
+        )  
+
+
+    submit = SubmitField('Create!')
+    
+   # def name_query():
+    #    return Campaign.query.filter_by(camp_name=Campaign.camp_name)
+
+   # select = QuerySelectField('Add to:', query_factory=name_query, allow_blank=True) 
 
 class CampaignForm(FlaskForm):
     camp_name = StringField('Campaign',
@@ -146,7 +154,7 @@ class CampaignForm(FlaskForm):
                 Length(min=1, max=30)
             ]
         )
-    submit = SubmitField('+ Add')
+    submit = SubmitField('Create!')
 
 class DeleteAccountForm(FlaskForm):
 
