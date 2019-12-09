@@ -2,7 +2,7 @@
 {% block body %}
 	<h1>Home Page</h1>
 	{% for role in roles %}
-		<h3>{{ role.character_name + "'s" }}</h3>
+		<h3>{{ role.character_name + "'s Stats" }}</h3>
           	<p> lvl:{{ role.level }} Race:{{ role.race }} Class:{{ role.character_class }}</p>
 	{% endfor %}              
 {% endblock %}
