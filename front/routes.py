@@ -7,7 +7,7 @@ from front.forms import RegistrationForm, LoginForm, UpdateAccountForm, Characte
 @app.route('/')
 @app.route('/home')
 def home():
-    parties=Campaign.query.all()
+    parties=Campaign.query.all() 
     
     return render_template('home.html', title='Home', parties=parties)
 
@@ -16,7 +16,7 @@ def home():
 @login_required
 def home_login():
     user_id = current_user
-    roles=Chara.query.filter_by(creator=user_id).all()
+    roles=Chara.query.filter_by(creator=user_id).all() 
 
     return render_template('home_login.html', title='Home', roles=roles)
 
