@@ -9,3 +9,5 @@
 /*.coverage
 
 /front/templates/.coverage
+
+/cov_html

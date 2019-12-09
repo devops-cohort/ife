@@ -106,3 +106,35 @@ class testview(TestBase):
         self.assertRedirects(response, redirect_url)
 
 
+class testtables(TestBase):
+
+    def test_add_user(self):
+
+        user1 =User(user_name="testuse", email="user@user.com", password="user2019")
+        db.session.add(user1)
+        db.session.commit()
+
+        self.assertEqual(User.query.count(), 3)
+
+
+
+
+    def test_add_character(self):
+
+        user2=Chara(character_name='Leeroy Jenkins The 4th', level=6, race='dragonkin', character_class='Wizard', user_id=1)
+        db.session.add(user2)
+        db.session.commit()
+
+        self.assertEqual(Chara.query.count(), 3)
+
+
+    def test_add_campaign(self):
+
+        user3= Campaign(camp_name='The Meme Wars Part 2: Cat strikes back', start_date='6/9/2014', end_date='TBD', status='Active', dm=1)
+        db.session.add(user3)
+        db.session.commit()
+
+        self.assertEqual(Campaign.query.count(), 3)
+
+
+
