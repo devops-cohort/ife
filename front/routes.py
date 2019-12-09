@@ -146,8 +146,8 @@ def account():
         form.email.data = current_user.email
 
     if form1.is_submitted():
-        Campaign.query.filter_by(campid = current_user.id).delete()
-        Chara.query.filter_by(charaid = current_user.id).delete()
+        Campaign.query.filter_by(dm = current_user.id).delete()
+        Chara.query.filter_by(user_id = current_user.id).delete()
         User.query.filter_by(id = current_user.id).delete()
         db.session.commit()
         return redirect(url_for('home'))
