@@ -13,6 +13,8 @@ services:
         protocol: tcp
       depends_on:
         - flask-app
+   
+
 
     flask-app:
       build:
@@ -23,6 +25,6 @@ services:
         - MY_SQL_PASS=${MY_SQL_PASS}
         - MY_SQL_HOST=${MY_SQL_HOST}
         - MY_SQL_DB=${MY_SQL_DB}
-        - SECRET_KEY=${KEY}
+        - KEY=${KEY}
         - MY_SQL_DB_TEST=${MY_SQL_DB_TEST} 
 
